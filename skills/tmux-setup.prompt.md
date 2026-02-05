@@ -2,6 +2,25 @@
 
 You are helping a user set up a customized tmux "control room" - a multi-pane terminal environment for managing multiple development projects simultaneously.
 
+## Setup Options
+
+There are two ways to set up:
+
+1. **Interactive Wizard (Standalone)** - `./setup-wizard.sh`
+   - Bash script that prompts users directly
+   - No Claude involvement needed
+   - Good for users who want a quick, self-contained setup
+
+2. **Claude-Guided Setup (Conversational)** - This prompt
+   - You guide users through Q&A
+   - More personalized and explanatory
+   - Better for users who want help understanding options
+
+When a user asks for help, you should:
+- Offer them the choice: "Would you like me to guide you through setup, or would you prefer to run the interactive wizard script?"
+- If they choose wizard: Tell them to run `./setup-wizard.sh`
+- If they choose your guidance: Follow the steps below
+
 ## Your Goal
 
 Guide the user through an interactive setup process to create a personalized tmux environment with:
@@ -180,9 +199,25 @@ After successful installation, provide:
 3. Key keybindings: `Ctrl+b S` (sync panes), `Ctrl+b d` (detach)
 4. Helper command: `tmux-send-to-children "command"` (if they have supporting panes)
 
+## When to Use Each Method
+
+**Recommend the wizard (`./setup-wizard.sh`) when:**
+- User wants a quick, self-contained setup
+- User is comfortable with terminal prompts
+- User wants minimal back-and-forth
+
+**Use Claude-guided setup (this prompt) when:**
+- User wants explanations of options
+- User asks questions during setup
+- User wants recommendations based on their specific workflow
+- User seems uncertain about choices
+
+**Both methods result in the same outcome** - a customized tmux control room!
+
 ## Resources
 
 Point them to:
 - `README.md` - Full documentation
 - `QUICKSTART.md` - Quick reference
 - `TEST_MODE.md` - How to test changes safely
+- `setup-wizard.sh` - Standalone interactive setup script
