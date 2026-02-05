@@ -1,0 +1,50 @@
+# Multi-Project Development Setup Example
+# For developers working on multiple related projects
+
+repos:
+  ancestor:
+    path: ~/dev/design-system
+    name: design-system
+    label: DS
+    description: "Shared design system and components"
+
+  children:
+    - path: ~/dev/website
+      name: website
+      label: WEB
+      description: "Marketing website"
+
+    - path: ~/dev/dashboard
+      name: dashboard
+      label: DASH
+      description: "Admin dashboard"
+
+    - path: ~/dev/docs
+      name: docs
+      label: DOCS
+      description: "Documentation site"
+
+session:
+  name: projects
+  window: dev
+  base_name: projects
+
+git:
+  remote_name: design-system
+  remote_url: git@github.com:mycompany/design-system.git
+  auto_add_remote: true
+
+features:
+  auto_start_claude: false
+  colored_borders: true
+  colored_title_bars: true
+  check_git_remotes: true
+  show_paths: true
+  enable_sync_panes: true
+
+display:
+  show_pane_titles: true
+  border_position: top
+  status_position: bottom
+  show_session_info: true
+  show_time: true

@@ -1,0 +1,77 @@
+# Tmux Control Room Configuration
+# This file defines your repository structure and session settings
+
+# Repository Configuration
+repos:
+  # Ancestor repository (main/parent project)
+  ancestor:
+    path: ~/dev/aj-starter-gold
+    name: aj-starter-gold
+    label: ROOT
+    description: "Parent repository containing shared code"
+
+  # Child repositories (projects that depend on ancestor)
+  children:
+    - path: ~/dev/ai-document
+      name: ai-document
+      label: CHILD
+      description: "AI document processing tool"
+
+    - path: ~/dev/svg-node-editor
+      name: svg-node-editor
+      label: CHILD
+      description: "SVG node editor application"
+
+    - path: ~/dev/tmux-dev
+      name: tmux-dev
+      label: CHILD
+      description: "Tmux development utilities"
+
+# Tmux Session Configuration
+session:
+  name: aj-stack
+  window: stack
+  base_name: aj-stack  # Used for --instance flag naming
+
+# Git Remote Configuration
+git:
+  remote_name: gold
+  remote_url: https://github.com/alexanderwiebe/aj-starter-gold.git
+  auto_add_remote: true
+
+# Feature Flags
+features:
+  # Auto-start Claude CLI in all panes on session creation
+  auto_start_claude: false
+
+  # Use colored borders for panes (per-pane colors)
+  colored_borders: true
+
+  # Show colored title bars in pane borders
+  colored_title_bars: true
+
+  # Automatically check and add git remotes
+  check_git_remotes: true
+
+  # Show repository paths in pane borders
+  show_paths: true
+
+  # Enable synchronize-panes keybinding
+  enable_sync_panes: true
+
+# Display Configuration
+display:
+  # Show pane titles in border
+  show_pane_titles: true
+
+  # Pane border position (top, bottom, off)
+  border_position: top
+
+  # Status bar position (top, bottom, off)
+  status_position: bottom
+
+  # Show session info in status bar
+  show_session_info: true
+
+  # Show time in status bar
+  show_time: true

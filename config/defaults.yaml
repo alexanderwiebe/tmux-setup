@@ -1,0 +1,98 @@
+# Tmux Control Room Default Settings
+# These are the fallback values used when not specified in setup.yaml
+
+# Default repository structure
+default_repos:
+  ancestor_path: ~/dev/ancestor
+  ancestor_name: ancestor
+  children_count: 3
+  children_prefix: child
+
+# Default session settings
+default_session:
+  name: devstack
+  window: main
+  base_name: devstack
+
+# Default git settings
+default_git:
+  remote_name: upstream
+  remote_url: ""
+  auto_add_remote: false
+
+# Default features
+default_features:
+  auto_start_claude: false
+  colored_borders: true
+  colored_title_bars: true
+  check_git_remotes: false
+  show_paths: true
+  enable_sync_panes: true
+
+# Default display settings
+default_display:
+  show_pane_titles: true
+  border_position: top
+  status_position: bottom
+  show_session_info: true
+  show_time: true
+
+# Default theme and layout
+default_theme: default
+default_layout: main-horizontal
+
+# Installation defaults
+installation:
+  bin_directory: ~/bin
+  tmux_conf_path: ~/.tmux.conf
+  zshrc_path: ~/.zshrc
+  backup_suffix: .backup
+  create_backups: true
+
+# Script generation defaults
+scripts:
+  devstack_name: devstack
+  helper_name: tmux-send-to-children
+  make_executable: true
+
+# Template defaults
+templates:
+  devstack_template: templates/devstack.template
+  tmux_conf_template: templates/tmux.conf.template
+  output_devstack: bin/devstack
+  output_tmux_conf: config/tmux.conf.additions
+
+# Validation rules
+validation:
+  min_children: 1
+  max_children: 10
+  min_pane_size: 20
+  max_pane_size: 80
+  valid_border_positions: ["top", "bottom", "off"]
+  valid_status_positions: ["top", "bottom", "off"]
+  valid_layouts: ["main-horizontal", "tiled", "main-vertical", "even-horizontal", "even-vertical"]
+
+# Color palette reference
+colors:
+  named_colors:
+    - black
+    - red
+    - green
+    - yellow
+    - blue
+    - magenta
+    - cyan
+    - white
+
+  bright_colors:
+    - brightblack
+    - brightred
+    - brightgreen
+    - brightyellow
+    - brightblue
+    - brightmagenta
+    - brightcyan
+    - brightwhite
+
+  # 256-color mode: colour0-colour255
+  supports_256_colors: true

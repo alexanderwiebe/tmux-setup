@@ -1,0 +1,58 @@
+# Example Custom Configuration
+# Copy this file and modify for your own setup
+# Usage: ./skills/install.sh --config=examples/custom-config-example.yaml
+
+# Repository Configuration
+repos:
+  # Main/parent repository
+  ancestor:
+    path: ~/dev/my-monorepo
+    name: my-monorepo
+    label: MAIN
+    description: "Monorepo containing shared libraries"
+
+  # Dependent projects
+  children:
+    - path: ~/dev/frontend
+      name: frontend
+      label: FE
+      description: "React frontend application"
+
+    - path: ~/dev/backend
+      name: backend
+      label: BE
+      description: "Node.js backend API"
+
+    - path: ~/dev/mobile
+      name: mobile
+      label: MOB
+      description: "React Native mobile app"
+
+# Session Configuration
+session:
+  name: mystack
+  window: work
+  base_name: mystack
+
+# Git Configuration
+git:
+  remote_name: shared
+  remote_url: https://github.com/myorg/my-monorepo.git
+  auto_add_remote: true
+
+# Feature Flags
+features:
+  auto_start_claude: true          # Start Claude CLI automatically
+  colored_borders: true            # Use colored pane borders
+  colored_title_bars: true         # Colored title bars
+  check_git_remotes: true          # Auto-add git remotes
+  show_paths: true                 # Show paths in borders
+  enable_sync_panes: true          # Enable sync keybinding
+
+# Display Settings
+display:
+  show_pane_titles: true
+  border_position: top
+  status_position: bottom
+  show_session_info: true
+  show_time: true

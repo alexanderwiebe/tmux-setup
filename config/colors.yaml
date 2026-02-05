@@ -1,0 +1,110 @@
+# Tmux Control Room Color Themes
+# Define color schemes for pane borders and UI elements
+
+themes:
+  # Default theme: Gold, Blue, Green, Magenta
+  default:
+    name: "Default"
+    description: "Original color scheme with gold ancestor and vibrant children"
+    pane_0: colour220  # Gold (ancestor)
+    pane_1: colour33   # Blue (child 1)
+    pane_2: colour34   # Green (child 2)
+    pane_3: colour201  # Magenta (child 3)
+    active_border: brightcyan
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+  # Ocean theme: Aquatic blues and cyans
+  ocean:
+    name: "Ocean"
+    description: "Cool blues and cyans for a calming workspace"
+    pane_0: colour39   # Bright cyan (ancestor)
+    pane_1: colour33   # Blue (child 1)
+    pane_2: colour27   # Deep blue (child 2)
+    pane_3: colour21   # Navy (child 3)
+    active_border: brightcyan
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+  # Forest theme: Greens with gold sun
+  forest:
+    name: "Forest"
+    description: "Nature-inspired greens with golden highlight"
+    pane_0: colour220  # Gold sun (ancestor)
+    pane_1: colour34   # Green (child 1)
+    pane_2: colour28   # Dark green (child 2)
+    pane_3: colour22   # Forest green (child 3)
+    active_border: colour34
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+  # Fire theme: Warm reds, oranges, yellows
+  fire:
+    name: "Fire"
+    description: "Warm and energetic reds, oranges, and yellows"
+    pane_0: colour226  # Bright yellow (ancestor)
+    pane_1: colour208  # Orange (child 1)
+    pane_2: colour196  # Red (child 2)
+    pane_3: colour165  # Magenta-red (child 3)
+    active_border: colour208
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+  # Purple theme: Purple and pink spectrum
+  purple:
+    name: "Purple"
+    description: "Royal purples and vibrant magentas"
+    pane_0: colour213  # Pink (ancestor)
+    pane_1: colour141  # Light purple (child 1)
+    pane_2: colour135  # Purple (child 2)
+    pane_3: colour93   # Dark purple (child 3)
+    active_border: colour141
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+  # Monochrome theme: Grayscale for minimal distraction
+  monochrome:
+    name: "Monochrome"
+    description: "Grayscale for focus without color distraction"
+    pane_0: colour255  # White (ancestor)
+    pane_1: colour250  # Light gray (child 1)
+    pane_2: colour244  # Medium gray (child 2)
+    pane_3: colour238  # Dark gray (child 3)
+    active_border: colour255
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+  # Cyberpunk theme: Neon colors
+  cyberpunk:
+    name: "Cyberpunk"
+    description: "High-contrast neon colors for a futuristic feel"
+    pane_0: colour51   # Cyan (ancestor)
+    pane_1: colour201  # Magenta (child 1)
+    pane_2: colour226  # Yellow (child 2)
+    pane_3: colour46   # Green (child 3)
+    active_border: colour51
+    inactive_border: colour240
+    status_bg: colour234
+    status_fg: colour255
+
+# Active theme selection
+active_theme: default
+
+# Custom color definitions (256-color palette)
+# You can reference these by number (0-255)
+# Reference: https://www.ditig.com/256-colors-cheat-sheet
+palette_reference:
+  blacks: "colour16-colour21"
+  grays: "colour232-colour255"
+  reds: "colour196, colour160, colour124"
+  greens: "colour46, colour34, colour22"
+  blues: "colour51, colour39, colour27, colour21"
+  yellows: "colour226, colour220, colour214"
+  magentas: "colour201, colour165, colour129"
+  cyans: "colour51, colour39, colour33"

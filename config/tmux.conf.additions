@@ -1,0 +1,43 @@
+# ============================================================================
+# Pane Border & Title Configuration (for aj-stack control room)
+# ============================================================================
+
+# Enable pane border titles (top position)
+set -g pane-border-status top
+
+# Pane border format with colored backgrounds
+# The background color is set per-pane in devstack script using conditionals
+# Per-pane colors: Gold (0), Blue (1), Green (2), Magenta (3)
+# Format: [index] TITLE │ path
+set -g pane-border-format "#{?pane_active,#[bold]#[fg=colour16],#[fg=colour250]} [#{pane_index}] #T #[fg=colour237]│ #[fg=colour243]#{b:pane_current_path} "
+
+# Default pane border styles (colors enhanced by devstack)
+set -g pane-active-border-style "fg=brightcyan,bg=default,bold"
+set -g pane-border-style "fg=colour240,bg=default"
+
+# ============================================================================
+# Status Bar Configuration
+# ============================================================================
+
+# Status bar position and style
+set -g status-position bottom
+set -g status-style "fg=colour255,bg=colour234"
+
+# Left side: session name
+set -g status-left "#[fg=cyan,bold] #{session_name} #[fg=colour237]│ "
+set -g status-left-length 30
+
+# Right side: time and pane info
+set -g status-right "#[fg=colour240] %H:%M #[fg=colour237]│ #[fg=colour255]#{window_index}:#{pane_index} "
+set -g status-right-length 40
+
+# Window status format
+set -g window-status-format " #I:#W "
+set -g window-status-current-format "#[fg=cyan,bold] #I:#W "
+
+# ============================================================================
+# Keybindings
+# ============================================================================
+
+# Toggle synchronize-panes (send to all panes at once)
+bind S set-window-option synchronize-panes\; display-message "synchronize-panes: #{?pane_synchronized,ON,OFF}"

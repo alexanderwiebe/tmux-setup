@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+set -e
+
+SESSION_BASE="aj-stack"
+WINDOW="stack"
+ANCESTOR="$HOME/dev/aj-starter-gold"
+CHILDREN=(
+  "$HOME/dev/ai-document"
+  "$HOME/dev/svg-node-editor"
+  "$HOME/dev/tmux-dev"
+)
+GOLD_REMOTE="https://github.com/alexanderwiebe/aj-starter-gold.git"
+
+# Parse flags
+AUTO_START_CLAUDE=false
+INSTANCE_NAME=""
+
+for arg in "$@"; do
+  case $arg in
+    --claude)
+      AUTO_START_CLAUDE=true
+      shift
+      ;;
+    --instance=*)
+      INSTANCE_NAME="${arg#*=}"
+      shift
+      ;;
+    *)
+      # Unknown argument
+      ;;
+  esac
+done
+
+# Build session name
+if [[ -n "$INSTANCE_NAME" ]]; then
+  SESSION="${SESSION_BASE}-${INSTANCE_NAME}"
+else
+  SESSION="$SESSION_BASE"
+fi
+
+# Check if session exists
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+  echo "✓ Session '$SESSION' already exists. Attaching..."
+  tmux attach-session -t "$SESSION"
+  exit 0
+fi
+
+echo "✓ Creating new session '$SESSION'..."
+
+# Create session with pane 0 (ancestor)
+tmux new-session -d -s "$SESSION" -n "$WINDOW" -c "$ANCESTOR"
+
+# Create panes 1-3 (children)
+tmux split-window -h -t "$SESSION:$WINDOW.0" -c "${CHILDREN[0]}"
+tmux split-window -v -t "$SESSION:$WINDOW.1" -c "${CHILDREN[1]}"
+tmux split-window -v -t "$SESSION:$WINDOW.2" -c "${CHILDREN[2]}"
+
+# Apply main-horizontal layout (large top pane, smaller panes below)
+tmux select-layout -t "$SESSION:$WINDOW" main-horizontal
+
+# Set colored title bars for each pane
+# Format uses conditionals to apply different background colors per pane index
+tmux set -w -t "$SESSION:$WINDOW" pane-border-format "#{?pane_active,#[bold]#[fg=colour16],#[fg=colour250]}#[bg=#{?#{==:#{pane_index},0},colour220,#{?#{==:#{pane_index},1},colour33,#{?#{==:#{pane_index},2},colour34,colour201}}}] [#{pane_index}] #T #[bg=default]#[fg=colour237]│ #[fg=colour243]#{b:pane_current_path} "
+
+# Set pane titles and colors
+# Pane 0: ROOT (aj-starter-gold) - GOLD border
+tmux select-pane -t "$SESSION:$WINDOW.0" -T "ROOT: aj-starter-gold"
+tmux select-pane -t "$SESSION:$WINDOW.0" -P 'fg=colour220,bg=default'
+
+# Pane 1: CHILD (ai-document) - BLUE border
+tmux select-pane -t "$SESSION:$WINDOW.1" -T "CHILD: ai-document"
+tmux select-pane -t "$SESSION:$WINDOW.1" -P 'fg=colour33,bg=default'
+
+# Pane 2: CHILD (svg-node-editor) - GREEN border
+tmux select-pane -t "$SESSION:$WINDOW.2" -T "CHILD: svg-node-editor"
+tmux select-pane -t "$SESSION:$WINDOW.2" -P 'fg=colour34,bg=default'
+
+# Pane 3: CHILD (tmux-dev) - MAGENTA border
+tmux select-pane -t "$SESSION:$WINDOW.3" -T "CHILD: tmux-dev"
+tmux select-pane -t "$SESSION:$WINDOW.3" -P 'fg=colour201,bg=default'
+
+# Check/add 'gold' remote in each child repo
+for i in "${!CHILDREN[@]}"; do
+  PANE_NUM=$((i + 1))
+  REPO_PATH="${CHILDREN[$i]}"
+
+  # Send commands to check and add remote
+  tmux send-keys -t "$SESSION:$WINDOW.$PANE_NUM" "cd $REPO_PATH" C-m
+  tmux send-keys -t "$SESSION:$WINDOW.$PANE_NUM" \
+    "git remote get-url gold &>/dev/null || git remote add gold $GOLD_REMOTE" C-m
+done
+
+# Auto-start Claude CLI if --claude flag is provided
+if [[ "$AUTO_START_CLAUDE" == true ]]; then
+  echo "Auto-starting Claude CLI in all panes..."
+  for pane in 0 1 2 3; do
+    tmux send-keys -t "$SESSION:$WINDOW.$pane" "claude" C-m
+  done
+fi
+
+# Select ancestor pane (pane 0) and attach
+tmux select-pane -t "$SESSION:$WINDOW.0"
+tmux attach-session -t "$SESSION"

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Auto-detect session (if running inside tmux) or use default
+if [ -n "$TMUX" ]; then
+  # We're inside tmux, use current session
+  SESSION=$(tmux display-message -p '#S')
+else
+  # Not in tmux, default to aj-stack
+  SESSION="aj-stack"
+fi
+
+WINDOW="stack"
+COMMAND="$*"
+
+# Check if session exists
+if ! tmux has-session -t "$SESSION" 2>/dev/null; then
+  echo "Error: Session '$SESSION' not found."
+  echo "Run 'devstack' or specify session: TMUX_SESSION=aj-stack-feature $0 \"command\""
+  exit 1
+fi
+
+# Send to panes 1, 2, 3 (children only)
+for pane in 1 2 3; do
+  tmux send-keys -t "$SESSION:$WINDOW.$pane" "$COMMAND" C-m
+done
+
+echo "✓ Sent to children in session '$SESSION': $COMMAND"

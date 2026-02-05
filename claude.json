@@ -1,0 +1,46 @@
+{
+  "name": "tmux-setup",
+  "version": "2.0.0",
+  "description": "Interactive tmux control room installer with customizable layouts, colors, and repository configurations",
+  "author": "AJ",
+  "skillType": "utility",
+  "invocation": {
+    "type": "command",
+    "command": "tmux-setup",
+    "aliases": ["tmux", "devstack-setup"]
+  },
+  "capabilities": [
+    "Interactive installation of tmux control room environment",
+    "Customizable color themes and layouts",
+    "Multi-repository development workspace setup",
+    "Template-based configuration management",
+    "Support for multiple parallel tmux sessions"
+  ],
+  "requirements": {
+    "tools": ["tmux", "git", "zsh"],
+    "optional": ["claude"]
+  },
+  "configuration": {
+    "configFiles": [
+      "config/setup.yaml",
+      "config/colors.yaml",
+      "config/layouts.yaml",
+      "config/defaults.yaml"
+    ],
+    "templates": [
+      "templates/devstack.template",
+      "templates/tmux.conf.template"
+    ]
+  },
+  "entryPoint": "skills/install.sh",
+  "commands": {
+    "install": {
+      "description": "Install tmux control room with interactive configuration",
+      "usage": "tmux-setup install [--interactive] [--config=PATH]"
+    },
+    "customize": {
+      "description": "Customize existing installation",
+      "usage": "tmux-setup customize [theme|layout|repos|features]"
+    }
+  }
+}

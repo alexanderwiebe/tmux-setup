@@ -1,0 +1,101 @@
+# Tmux Control Room Layout Definitions
+# Configure how panes are arranged in your control room
+
+layouts:
+  # Main horizontal: Large top pane, three equal bottom panes
+  main-horizontal:
+    name: "Main Horizontal"
+    description: "Large top pane for ancestor, three equal bottom panes for children"
+    tmux_layout: main-horizontal
+    pane_arrangement: |
+      ┌─────────────────────────────────────┐
+      │                                     │
+      │  Pane 0: Ancestor (Large)           │
+      │                                     │
+      ├───────────┬───────────┬─────────────┤
+      │ Pane 1    │ Pane 2    │ Pane 3      │
+      │ Child 1   │ Child 2   │ Child 3     │
+      └───────────┴───────────┴─────────────┘
+    use_case: "Best for workflows where ancestor is primary focus"
+
+  # Tiled: Four equal panes in 2x2 grid
+  tiled:
+    name: "Tiled"
+    description: "Four equal panes arranged in a 2x2 grid"
+    tmux_layout: tiled
+    pane_arrangement: |
+      ┌─────────────┬─────────────┐
+      │             │             │
+      │  Pane 0     │  Pane 1     │
+      │  Ancestor   │  Child 1    │
+      ├─────────────┼─────────────┤
+      │             │             │
+      │  Pane 2     │  Pane 3     │
+      │  Child 2    │  Child 3    │
+      └─────────────┴─────────────┘
+    use_case: "Equal attention to all repositories"
+
+  # Main vertical: Large left pane, three stacked right panes
+  main-vertical:
+    name: "Main Vertical"
+    description: "Large left pane for ancestor, three stacked right panes for children"
+    tmux_layout: main-vertical
+    pane_arrangement: |
+      ┌─────────────┬─────────────┐
+      │             │  Pane 1     │
+      │             │  Child 1    │
+      │  Pane 0     ├─────────────┤
+      │  Ancestor   │  Pane 2     │
+      │  (Large)    │  Child 2    │
+      │             ├─────────────┤
+      │             │  Pane 3     │
+      │             │  Child 3    │
+      └─────────────┴─────────────┘
+    use_case: "Wide displays, ancestor needs horizontal space"
+
+  # Even horizontal: Four equal panes stacked horizontally
+  even-horizontal:
+    name: "Even Horizontal"
+    description: "Four equal horizontal panes, stacked vertically"
+    tmux_layout: even-horizontal
+    pane_arrangement: |
+      ┌─────────────────────────────────────┐
+      │  Pane 0: Ancestor                   │
+      ├─────────────────────────────────────┤
+      │  Pane 1: Child 1                    │
+      ├─────────────────────────────────────┤
+      │  Pane 2: Child 2                    │
+      ├─────────────────────────────────────┤
+      │  Pane 3: Child 3                    │
+      └─────────────────────────────────────┘
+    use_case: "Tall displays, focus one repository at a time"
+
+  # Even vertical: Four equal panes side-by-side
+  even-vertical:
+    name: "Even Vertical"
+    description: "Four equal vertical panes, side-by-side"
+    tmux_layout: even-vertical
+    pane_arrangement: |
+      ┌──────┬──────┬──────┬──────┐
+      │      │      │      │      │
+      │Pane 0│Pane 1│Pane 2│Pane 3│
+      │Ancst │Child1│Child2│Child3│
+      │      │      │      │      │
+      │      │      │      │      │
+      └──────┴──────┴──────┴──────┘
+    use_case: "Ultra-wide displays, see all at once"
+
+# Active layout selection
+active_layout: main-horizontal
+
+# Layout customization options
+options:
+  # Main pane size percentage (for main-horizontal and main-vertical)
+  # Range: 20-80, default: 50
+  main_pane_size: 50
+
+  # Allow layout to auto-adjust when panes are added/removed
+  auto_adjust: true
+
+  # Respect manual pane resizing
+  respect_manual_resize: true

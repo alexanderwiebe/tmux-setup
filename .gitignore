@@ -1,0 +1,23 @@
+# Backup files
+*.backup
+*.backup-*
+*.tmp
+
+# Generated files
+config/*.generated
+bin/*.generated
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Test output
+test-output/
+*.log
