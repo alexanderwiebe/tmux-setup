@@ -1,0 +1,37 @@
+# Personal Projects Configuration Example
+# Use with: devstack --config=~/configs/personal-projects.yaml
+
+repos:
+  ancestor:
+    path: ~/personal/main-app
+    name: main-app
+    label: ROOT
+
+  children:
+    - path: ~/personal/side-project-1
+      name: side-project-1
+      label: CHILD
+
+    - path: ~/personal/side-project-2
+      name: side-project-2
+      label: CHILD
+
+    - path: ~/personal/experiments
+      name: experiments
+      label: CHILD
+
+session:
+  name: personal-stack
+  window: stack
+
+git:
+  remote_name: origin
+  remote_url: https://github.com/yourusername/main-app.git
+
+features:
+  auto_start_claude: true  # Auto-start Claude in all panes
+  colored_borders: true
+  colored_title_bars: true
+  check_git_remotes: false
+  show_paths: true
+  enable_sync_panes: true

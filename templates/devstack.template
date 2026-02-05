@@ -9,6 +9,7 @@ set -e
 # Configuration Variables (from setup.yaml)
 # ============================================================================
 
+# Default configuration (can be overridden with --config)
 SESSION_BASE="{{SESSION_NAME}}"
 WINDOW="{{WINDOW_NAME}}"
 ANCESTOR="{{ANCESTOR_PATH}}"
@@ -20,12 +21,73 @@ CHILDREN=(
 {{GIT_REMOTE_CONFIG}}
 
 # ============================================================================
+# Config File Loading Function
+# ============================================================================
+
+load_config_file() {
+  local config_file="$1"
+
+  if [[ ! -f "$config_file" ]]; then
+    echo "Error: Config file not found: $config_file"
+    exit 1
+  fi
+
+  echo "✓ Loading config from: $config_file"
+
+  # Simple YAML parser for our specific structure
+  # Reads ancestor path
+  local ancestor_path=$(grep "^[[:space:]]*path:" "$config_file" | head -1 | awk -F': ' '{print $2}' | tr -d '"' | tr -d "'")
+  if [[ -n "$ancestor_path" ]]; then
+    # Expand tilde
+    ancestor_path="${ancestor_path/#\~/$HOME}"
+    ANCESTOR="$ancestor_path"
+  fi
+
+  # Read session name
+  local session_name=$(grep "^[[:space:]]*name:" "$config_file" | grep -A5 "^session:" | grep "name:" | awk -F': ' '{print $2}' | tr -d '"' | tr -d "'")
+  if [[ -n "$session_name" ]]; then
+    SESSION_BASE="$session_name"
+  fi
+
+  # Read children paths (all paths after the first one)
+  local child_paths=()
+  local in_children=false
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^[[:space:]]*children: ]]; then
+      in_children=true
+      continue
+    fi
+
+    if [[ "$in_children" == true ]]; then
+      # Stop if we hit another top-level key
+      if [[ "$line" =~ ^[a-z] ]] && [[ ! "$line" =~ ^[[:space:]] ]]; then
+        break
+      fi
+
+      # Extract path from "- path: ~/dev/something"
+      if [[ "$line" =~ path:[[:space:]]*(.+) ]]; then
+        local child_path="${BASH_REMATCH[1]}"
+        # Remove quotes and expand tilde
+        child_path=$(echo "$child_path" | tr -d '"' | tr -d "'")
+        child_path="${child_path/#\~/$HOME}"
+        child_paths+=("$child_path")
+      fi
+    fi
+  done < "$config_file"
+
+  if [[ ${#child_paths[@]} -gt 0 ]]; then
+    CHILDREN=("${child_paths[@]}")
+  fi
+}
+
+# ============================================================================
 # Command-line Argument Parsing
 # ============================================================================
 
 # Parse flags
 AUTO_START_CLAUDE={{AUTO_START_CLAUDE}}
 INSTANCE_NAME=""
+CONFIG_FILE=""
 
 for arg in "$@"; do
   case $arg in
@@ -37,19 +99,32 @@ for arg in "$@"; do
       INSTANCE_NAME="${arg#*=}"
       shift
       ;;
+    --config=*)
+      CONFIG_FILE="${arg#*=}"
+      # Expand tilde in config path
+      CONFIG_FILE="${CONFIG_FILE/#\~/$HOME}"
+      shift
+      ;;
     --help|-h)
       echo "Usage: devstack [OPTIONS]"
       echo ""
       echo "Options:"
+      echo "  --config=PATH         Use alternate config file (YAML)"
+      echo "                        Overrides session name, paths for all panes"
       echo "  --claude              Auto-start Claude CLI in all panes"
       echo "  --instance=NAME       Create named instance (session: {{SESSION_NAME}}-NAME)"
       echo "  --help, -h            Show this help message"
       echo ""
       echo "Examples:"
-      echo "  devstack                          # Start default session"
-      echo "  devstack --claude                 # Start with Claude CLI"
-      echo "  devstack --instance=feature       # Named instance"
-      echo "  devstack --instance=bug --claude  # Named instance with Claude"
+      echo "  devstack                                    # Start with default config"
+      echo "  devstack --config=~/dev/project1.yaml       # Use alternate config"
+      echo "  devstack --config=~/configs/work.yaml --claude"
+      echo "  devstack --config=~/configs/personal.yaml --instance=side-project"
+      echo ""
+      echo "Config File Format:"
+      echo "  Use the same format as config/setup.yaml"
+      echo "  See: ~/dev/tmux-setup/config/setup.yaml for example"
+      echo "  Or: ~/dev/tmux-setup/examples/example-config.json (convert to YAML)"
       exit 0
       ;;
     *)
@@ -57,6 +132,14 @@ for arg in "$@"; do
       ;;
   esac
 done
+
+# ============================================================================
+# Load Config File (if specified)
+# ============================================================================
+
+if [[ -n "$CONFIG_FILE" ]]; then
+  load_config_file "$CONFIG_FILE"
+fi
 
 # ============================================================================
 # Session Name Construction

@@ -1,0 +1,40 @@
+# Alternate Project Configuration Example
+# Use with: devstack --config=~/path/to/this-file.yaml
+#
+# This allows you to have multiple tmux configurations on the same machine
+# without reinstalling. Just create different YAML files for different projects!
+
+repos:
+  ancestor:
+    path: ~/work/client-project
+    name: client-project
+    label: ROOT
+
+  children:
+    - path: ~/work/client-frontend
+      name: frontend
+      label: CHILD
+
+    - path: ~/work/client-backend
+      name: backend
+      label: CHILD
+
+    - path: ~/work/client-docs
+      name: docs
+      label: CHILD
+
+session:
+  name: client-stack
+  window: stack
+
+git:
+  remote_name: upstream
+  remote_url: https://github.com/client/main-project.git
+
+features:
+  auto_start_claude: false
+  colored_borders: true
+  colored_title_bars: true
+  check_git_remotes: true
+  show_paths: true
+  enable_sync_panes: true
