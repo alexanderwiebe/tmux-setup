@@ -94,7 +94,7 @@ themes:
     status_fg: colour255
 
 # Active theme selection
-active_theme: default
+active_theme: ocean
 
 # Custom color definitions (256-color palette)
 # You can reference these by number (0-255)

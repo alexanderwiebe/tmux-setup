@@ -9,16 +9,19 @@
     "command": "tmux-setup",
     "aliases": ["tmux", "devstack-setup"]
   },
+  "promptFile": "skills/tmux-setup.prompt.md",
   "capabilities": [
     "Interactive installation of tmux control room environment",
+    "Step-by-step Q&A to gather user preferences (panes, paths, colors)",
     "Customizable color themes and layouts",
     "Multi-repository development workspace setup",
+    "Dynamic configuration generation from user input",
     "Template-based configuration management",
     "Support for multiple parallel tmux sessions"
   ],
   "requirements": {
-    "tools": ["tmux", "git", "zsh"],
-    "optional": ["claude"]
+    "tools": ["tmux", "git", "zsh", "bash"],
+    "optional": ["claude", "jq"]
   },
   "configuration": {
     "configFiles": [
@@ -33,7 +36,17 @@
     ]
   },
   "entryPoint": "skills/install.sh",
+  "scripts": {
+    "generate-config": "skills/generate-config.sh",
+    "install": "skills/install.sh",
+    "customize": "skills/customize.sh"
+  },
   "commands": {
+    "setup": {
+      "description": "Interactive setup - guides you through configuring your tmux control room",
+      "usage": "tmux-setup",
+      "prompt": "skills/tmux-setup.prompt.md"
+    },
     "install": {
       "description": "Install tmux control room with interactive configuration",
       "usage": "tmux-setup install [--interactive] [--config=PATH]"

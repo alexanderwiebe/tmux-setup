@@ -2,6 +2,31 @@
 
 A Claude Code skill for creating customizable tmux-based "control rooms" optimized for running multiple Claude Code CLI instances across related repositories.
 
+## 🚀 For New Users
+
+**Want to use this skill?** See [INSTALL_FOR_USERS.md](INSTALL_FOR_USERS.md) for a complete step-by-step guide!
+
+**Quick start:**
+```bash
+# 1. Clone this repository
+git clone git@github.com:alexanderwiebe/tmux-setup.git ~/dev/tmux-setup
+
+# 2. In Claude Code, type:
+/tmux-setup
+
+# 3. Follow Claude's interactive setup!
+```
+
+Claude will guide you through customizing:
+- Number of panes (2-6)
+- Directory paths for each pane
+- Color themes (7 options)
+- Layout preferences (5 options)
+- Session naming
+- And more!
+
+---
+
 ## What's New in Version 2.0
 
 This package is now a **Claude Code skill** with:

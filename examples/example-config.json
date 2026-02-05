@@ -1,0 +1,39 @@
+{
+  "session_name": "my-dev-stack",
+  "theme": "ocean",
+  "layout": "main-horizontal",
+  "panes": [
+    {
+      "path": "~/dev/main-project",
+      "name": "main-project",
+      "label": "ROOT"
+    },
+    {
+      "path": "~/dev/frontend-app",
+      "name": "frontend",
+      "label": "CHILD"
+    },
+    {
+      "path": "~/dev/backend-api",
+      "name": "backend",
+      "label": "CHILD"
+    },
+    {
+      "path": "~/dev/documentation",
+      "name": "docs",
+      "label": "CHILD"
+    }
+  ],
+  "git": {
+    "remote_name": "upstream",
+    "remote_url": "https://github.com/yourusername/main-project.git"
+  },
+  "features": {
+    "auto_start_claude": false,
+    "colored_borders": true,
+    "colored_title_bars": true,
+    "check_git_remotes": true,
+    "show_paths": true,
+    "enable_sync_panes": true
+  }
+}
