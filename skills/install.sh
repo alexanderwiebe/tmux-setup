@@ -28,6 +28,7 @@ INTERACTIVE=false
 CUSTOM_CONFIG=""
 TEST_MODE=false
 DRY_RUN=false
+SKIP_CONFIG_CHECK=false
 
 # ============================================================================
 # Utility Functions
@@ -70,6 +71,59 @@ print_dry_run_banner() {
   echo -e "${CYAN}║  No changes will be made               ║${NC}"
   echo -e "${CYAN}╚════════════════════════════════════════╝${NC}"
   echo ""
+}
+
+# Check if configuration has placeholder/example values
+check_config_values() {
+  if [[ "$SKIP_CONFIG_CHECK" == true ]]; then
+    return 0
+  fi
+
+  # Check for example paths in config
+  if grep -q "main-project\|frontend-app\|backend-api" "$CONFIG_FILE" 2>/dev/null; then
+    echo ""
+    print_warning "⚠️  Detected example/placeholder values in configuration!"
+    echo ""
+    echo -e "${YELLOW}Your config contains example paths like:${NC}"
+    echo "  • ~/dev/main-project"
+    echo "  • ~/dev/frontend-app"
+    echo ""
+    echo -e "${YELLOW}This means you haven't configured your actual repositories yet.${NC}"
+    echo ""
+    echo "Options:"
+    echo "  1) Run the setup wizard: ${BOLD}./setup-wizard.sh${NC}"
+    echo "  2) Ask Claude to help: ${BOLD}claude${NC} then say 'Help me set up tmux-setup'"
+    echo "  3) Edit config manually: ${BOLD}vim config/setup.yaml${NC}"
+    echo "  4) Continue anyway (not recommended)"
+    echo ""
+    read -p "What would you like to do? (1/2/3/4): " choice
+
+    case $choice in
+      1)
+        echo ""
+        print_step "Starting setup wizard..."
+        exec "$SCRIPT_DIR/setup-wizard.sh"
+        ;;
+      2)
+        echo ""
+        print_step "Please run 'claude' in this directory and ask:"
+        echo "  'Help me set up my tmux control room'"
+        exit 0
+        ;;
+      3)
+        echo ""
+        print_step "Edit config/setup.yaml, then run ./skills/install.sh again"
+        exit 0
+        ;;
+      4)
+        print_warning "Continuing with example values..."
+        ;;
+      *)
+        print_error "Invalid choice. Exiting."
+        exit 1
+        ;;
+    esac
+  fi
 }
 
 # Simple YAML parser for our specific structure
@@ -684,6 +738,11 @@ main() {
     print_dry_run_banner
   elif [[ "$TEST_MODE" == true ]]; then
     print_test_banner
+  fi
+
+  # Check for placeholder values (unless in test/dry-run mode)
+  if [[ "$TEST_MODE" == false && "$DRY_RUN" == false ]]; then
+    check_config_values
   fi
 
   # Interactive setup if requested

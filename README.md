@@ -6,24 +6,48 @@ A Claude Code skill for creating customizable tmux-based "control rooms" optimiz
 
 **Want to use this skill?** See [INSTALL_FOR_USERS.md](INSTALL_FOR_USERS.md) for a complete step-by-step guide!
 
-**Quick start:**
+### Installation Methods
+
+**Method 1: Interactive Wizard (Recommended for first-time users)**
 ```bash
 # 1. Clone this repository
 git clone git@github.com:alexanderwiebe/tmux-setup.git ~/dev/tmux-setup
+cd tmux-setup
 
-# 2. In Claude Code, type:
-/tmux-setup
-
-# 3. Follow Claude's interactive setup!
+# 2. Run the setup wizard
+./setup-wizard.sh
 ```
 
-Claude will guide you through customizing:
+The wizard will ask you:
 - Number of panes (2-6)
-- Directory paths for each pane
-- Color themes (7 options)
-- Layout preferences (5 options)
-- Session naming
+- Directory path for each pane
+- Display name for each pane
+- Color theme preference (7 options)
+- Layout preference (5 options)
+- Session name
 - And more!
+
+**Method 2: Claude-Guided Setup (Most interactive)**
+```bash
+# 1. Clone this repository
+git clone git@github.com:alexanderwiebe/tmux-setup.git ~/dev/tmux-setup
+cd tmux-setup
+
+# 2. Start Claude
+claude
+
+# 3. Ask Claude to help:
+"Help me set up my tmux control room"
+```
+
+Claude will guide you through customization with conversational Q&A.
+
+**Method 3: Quick Install (Advanced users with existing config)**
+```bash
+cd ~/dev/tmux-setup
+./skills/install.sh
+```
+⚠️ Only use this if you've already configured the YAML files manually!
 
 ---
 
